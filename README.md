@@ -31,7 +31,7 @@
 
 6. UI Mockup (semua)
 
-   <img width="385" height="633" alt="image" src="https://github.com/user-attachments/assets/fc8c92e1-8954-4be2-b6bc-004de1718070" />
+   <img width="285" height="633" alt="image" src="https://github.com/user-attachments/assets/fc8c92e1-8954-4be2-b6bc-004de1718070" />
 
   
 8. architecture (balqis) <br>
