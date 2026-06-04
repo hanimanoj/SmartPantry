@@ -11,22 +11,22 @@
    
     **LOGIN**
    
- a. User Authentication
+      a. User Authentication
  
-    - Users can log in using email and password
-    
-    - Authentication is handled using Firebase Authentication
-    
-    - System verifies user credentials securely before granting access
+          - Users can log in using email and password
+          
+          - Authentication is handled using Firebase Authentication
+          
+          - System verifies user credentials securely before granting access
 
     
- b. Input Validation
+      b. Input Validation
  
-    - Email field validation (must follow proper email format)
-    
-    - Password field validation (minimum length requirement, e.g., 6+ characters)
-    
-    - Error messages shown for:(Invalid email format, Incorrect Password, Empty fields)
+          - Email field validation (must follow proper email format)
+          
+          - Password field validation (minimum length requirement, e.g., 6+ characters)
+          
+          - Error messages shown for:(Invalid email format, Incorrect Password, Empty fields)
     
 
 
