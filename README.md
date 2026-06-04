@@ -36,7 +36,7 @@
   
 8. architecture (balqis) <br>
    6.1 Widgets & Components Structure <br>
-     <img width="393" height="298" alt="image" src="https://github.com/user-attachments/assets/84741161-7d14-4a07-a902-1337be73e0eb" />
+     <img width="484" height="408" alt="image" src="https://github.com/user-attachments/assets/965eee7f-d285-438f-88ff-ae3cb3b77322" />
 
 
 9. ⁠data model (hani)
