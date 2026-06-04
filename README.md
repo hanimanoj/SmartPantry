@@ -40,7 +40,7 @@
         - Users can choose to save or cancel the entry
 
 <h1>5. UI Mockup (semua)</h1> 
-   <img width="233" height="479" alt="image" src="https://github.com/user-attachments/assets/d870b045-1da0-4db9-b881-68662cd07709" /> <img width="238" height="479" alt="image" src="https://github.com/user-attachments/assets/9c8a70d2-02a9-4c72-84f4-e3b627cb082c" /> <img width="176" height="361" alt="Screenshot 2026-06-04 193707" src="https://github.com/user-attachments/assets/45a6db5c-d00a-4b17-9057-d2900ccc847e" />
+   <img width="233" height="479" alt="image" src="https://github.com/user-attachments/assets/d870b045-1da0-4db9-b881-68662cd07709" /> <img width="238" height="479" alt="image" src="https://github.com/user-attachments/assets/9c8a70d2-02a9-4c72-84f4-e3b627cb082c" /> <img width="238" height="479" alt="Screenshot 2026-06-04 193707" src="https://github.com/user-attachments/assets/45a6db5c-d00a-4b17-9057-d2900ccc847e" />
 
 
 
