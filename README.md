@@ -13,12 +13,13 @@
 5. UI Mockup (semua)
   
 6. architecture (balqis)
+   6.1
 
-7. ⁠data model (hani)
+8. ⁠data model (hani)
 
-8. ⁠flowchart (haifa)
+9. ⁠flowchart (haifa)
 
 
-9. References
+10. References
     i. App Store. (n.d.). NoWaste: Food Inventory List App - App Store. https://apps.apple.com/my/app/nowaste-food-inventory-list/id926211004
    ii. Smart Pantry - apps on Google Play. (n.d.). https://play.google.com/store/apps/details?id=com.smartpantry
