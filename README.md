@@ -31,7 +31,7 @@
 
 6. UI Mockup (semua)
 
-   <img width="385" height="833" alt="image" src="https://github.com/user-attachments/assets/fc8c92e1-8954-4be2-b6bc-004de1718070" />
+   <img width="185" height="633" alt="image" src="https://github.com/user-attachments/assets/fc8c92e1-8954-4be2-b6bc-004de1718070" />
 
   
 8. architecture (balqis) <br>
@@ -40,7 +40,7 @@
 
 
 9. ⁠data model (hani)
-<img width="235" height="104" alt="image" src="https://github.com/user-attachments/assets/91cdad28-c3e9-45c3-8aed-23941a4e2a89" />
+<img width="435" height="204" alt="image" src="https://github.com/user-attachments/assets/91cdad28-c3e9-45c3-8aed-23941a4e2a89" />
 
 
 10. ⁠flowchart (haifa)
