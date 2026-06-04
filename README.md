@@ -51,6 +51,10 @@
         - Send friendly nudges (e.g. our pantry is looking organized — nice work, Hungry? You’ve got some breads., etc.)
         - Send action confirmations (e.g. adding, editing, or deleting items)
 
+  <h2>4.6 HISTORY</h2>
+  
+        - Record and display past actions (e.g. adding, editing, or deleting items)
+
 <h1>5. UI Mockup (semua)</h1> 
    <img width="233" height="479" alt="image" src="https://github.com/user-attachments/assets/d870b045-1da0-4db9-b881-68662cd07709" /> <img width="238" height="479" alt="image" src="https://github.com/user-attachments/assets/9c8a70d2-02a9-4c72-84f4-e3b627cb082c" /> <img width="238" height="479" alt="Screenshot 2026-06-04 193707" src="https://github.com/user-attachments/assets/45a6db5c-d00a-4b17-9057-d2900ccc847e" /> <img width="233" height="479" alt="image" src="https://github.com/user-attachments/assets/b9f192c9-ee22-47fa-af3d-62ff340085f9" /> <img width="233" height="479" alt="image" src="https://github.com/user-attachments/assets/c57c7d12-c894-40cc-9f8e-4b0d02e9ac36" /> <img width="233" height="479" alt="image" src="https://github.com/user-attachments/assets/a1e5cf05-0874-45e0-af6f-902cb35865e1" />
 
