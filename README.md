@@ -12,7 +12,7 @@
 
 5. UI Mockup (semua)
   
-6. architecture (balqis)
+6. architecture (balqis) <br>
    6.1
 
 8. ⁠data model (hani)
