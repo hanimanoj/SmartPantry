@@ -1,11 +1,16 @@
 # Smart Pantry Proposal
 
 <h1>1. Introduction (lela)</h1>
-  
+  Lately, a lot of people experience food waste among the products that they bought, because of poor tracking of product expiration date. Many people also seldomly forgot items in their pantry that leads to unnecessary waste. To avoid this issue, we proposed a Smart Pantry application. 
 <h1>2. Objective (lela)</h1>
-
+- Develop a mobile application that allows user to keep track of the products they bought including the expiration date
+- Provide real-time tracking of items inside pantry with status (safe, almost expired, expired)
+- Implement notification alerts to alert users on the product that is reaching the expiration date
+- Practice sustainability by reducing food waste
 <h1>3. Target User (lela)</h1>
-
+- Household residents who wants to manage pantry items efficiently
+- People who live in shared accomodations who need reminders for food safety
+- Elderly people who may forget the expiration date
 
 <h1>4. ⁠⁠Features and Functionality (semua)</h1>
     <h2>4.1 LOGIN</h2>
