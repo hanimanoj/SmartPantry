@@ -27,7 +27,7 @@
    **DASHBOARD**
    
        - Display item that nearly to expired
-       - Features to add item
+       - Add item features
 
 6. UI Mockup (semua)
 
