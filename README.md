@@ -26,7 +26,8 @@
        - Add item features
 
 <h1>5. UI Mockup (semua)</h1> 
-   <img width="143" height="317" alt="image" src="https://github.com/user-attachments/assets/fc8c92e1-8954-4be2-b6bc-004de1718070" />
+   <img width="143" height="317" alt="image" src="https://github.com/user-attachments/assets/fc8c92e1-8954-4be2-b6bc-004de1718070" /> <img width="171" height="318" alt="image" src="https://github.com/user-attachments/assets/5641c622-1a3b-47d9-a05a-b922b9c636c5" />
+
 
   
 <h1>6. Architecture (balqis)</h1>
