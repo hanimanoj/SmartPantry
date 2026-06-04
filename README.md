@@ -8,7 +8,8 @@
 
 
 4. ⁠⁠Features and Functionality (semua)
- **LOGIN**
+   
+    **LOGIN**
  a. User Authentication
     - Users can log in using email and password
     - Authentication is handled using Firebase Authentication
@@ -19,9 +20,9 @@
     - Error messages shown for:(Invalid email format, Incorrect Password, Empty fields)
 
 
-5. UI Mockup (semua)
+6. UI Mockup (semua)
   
-6. architecture (balqis) <br>
+7. architecture (balqis) <br>
    6.1 Widgets & Components Structure <br>
      <img width="493" height="298" alt="image" src="https://github.com/user-attachments/assets/84741161-7d14-4a07-a902-1337be73e0eb" />
 
