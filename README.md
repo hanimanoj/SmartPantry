@@ -10,10 +10,13 @@
 4. ⁠⁠Features and Functionality (semua)
    
     **LOGIN**
+   
  a. User Authentication
     - Users can log in using email and password
     - Authentication is handled using Firebase Authentication
     - System verifies user credentials securely before granting access
+
+    
  b. Input Validation
     - Email field validation (must follow proper email format)
     - Password field validation (minimum length requirement, e.g., 6+ characters)
