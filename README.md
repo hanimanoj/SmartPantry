@@ -34,7 +34,7 @@
        - Display pantry summary 
        - Add item features
 
-    <h2>4.3 ADD ITEM PAGE</h2>
+  <h2>4.3 ADD ITEM PAGE</h2>
         - Users can add item details and picture
         - Users will set the expiry date
         - Users can choose to save or cancel the entry
