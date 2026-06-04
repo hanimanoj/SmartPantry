@@ -38,6 +38,8 @@
 
 
 8. ⁠data model (hani)
+<img width="835" height="604" alt="image" src="https://github.com/user-attachments/assets/91cdad28-c3e9-45c3-8aed-23941a4e2a89" />
+
 
 9. ⁠flowchart (haifa)
 <img width="233" height="695" alt="image" src="https://github.com/user-attachments/assets/2b86a51c-fa80-4067-8eaa-83b2b9f7202f" />
