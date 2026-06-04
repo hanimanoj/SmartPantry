@@ -40,7 +40,7 @@
 
 
 <h1>7. ⁠Data model (hani)</h1> 
-<img width="359" height="226" alt="image" src="https://github.com/user-attachments/assets/5ac99a32-76c0-4fff-b83b-1f839f3aa549" />
+<img width="359" height="326" alt="image" src="https://github.com/user-attachments/assets/5ac99a32-76c0-4fff-b83b-1f839f3aa549" />
 
 
 
