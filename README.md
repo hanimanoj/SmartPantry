@@ -24,7 +24,7 @@
           - Password field validation (minimum length requirement, e.g., 6+ characters)
           - Error messages shown for:(Invalid email format, Incorrect Password, Empty fields)
 
-**DASHBOARD**
+   **DASHBOARD**
    
     - Display item that nearly to expired
     - Features to add item
