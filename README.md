@@ -20,9 +20,10 @@
           - Password field validation (minimum length requirement, e.g., 6+ characters)
           - Error messages shown for:(Invalid email format, Incorrect Password, Empty fields)
 
-   <h2>4.2 DASHBOARD</h2>
+   <h2>4.2 HOMEPGAE & DASHBOARD</h2>
    
        - Display item that nearly to expired
+       - Display pantry summary 
        - Add item features
 
 <h1>5. UI Mockup (semua)</h1> 
