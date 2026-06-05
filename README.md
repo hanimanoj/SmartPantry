@@ -2,7 +2,7 @@
 
 <h1>1. Introduction </h1>
   Lately, a lot of people experience food waste among the products that they bought, because of poor tracking of product expiration date. Many people also seldomly forgot items in their pantry that leads to unnecessary waste. To avoid this issue, we proposed a Smart Pantry application. 
-<h1>2. Objectiv </h1>
+<h1>2. Objective </h1>
 
 - Develop a mobile application that allows user to keep track of the products they bought including the expiration date
 - Provide real-time tracking of items inside pantry with status (safe, almost expired, expired)
