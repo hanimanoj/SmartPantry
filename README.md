@@ -1,5 +1,12 @@
 # Smart Pantry Proposal
 
+<h1>Group 5 Members</h1>
+
+- AINUL HANI BINTI MANOJ (2314784)
+- FARRESA HAIFA' BINTI MOHAMMED (2319554)
+- BALQIS BINTI MUHAMMAD MA'AMUN (2314074)
+- LAILA KARMILA BINTI SHAHRUNIZAM (2313814)
+
 <h1>1. Introduction </h1>
   Lately, a lot of people experience food waste among the products that they bought, because of poor tracking of product expiration date. Many people also seldomly forgot items in their pantry that leads to unnecessary waste. To avoid this issue, we proposed a Smart Pantry application. 
 <h1>2. Objective </h1>
