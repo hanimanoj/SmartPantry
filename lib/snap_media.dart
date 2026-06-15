@@ -1,310 +1,320 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'listitem.dart';
-import 'snap_media.dart';
+import 'package:camera/camera.dart';
 import 'dart:convert';
+import 'package:image_picker/image_picker.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'dart:io';
 import 'topBar.dart';
-import 'bottomBar.dart';
 
-List<Map<String, dynamic>> pantryItems = [];
-
-class AddItemPage extends StatefulWidget {
-  const AddItemPage({super.key});
+class SnapItemPhotoScreen extends StatefulWidget {
+  const SnapItemPhotoScreen({super.key});
 
   @override
-  State<AddItemPage> createState() => _AddItemPageState();
+  State<SnapItemPhotoScreen> createState() => _SnapItemPhotoScreenState();
 }
 
-class _AddItemPageState extends State<AddItemPage> {
-  final _formKey = GlobalKey<FormState>();
+class _SnapItemPhotoScreenState extends State<SnapItemPhotoScreen> {
+  CameraController? _cameraController;
+  List<CameraDescription>? _cameras;
+  bool _isCameraInitialized = false;
+  final ImagePicker _picker = ImagePicker();
+  
+  XFile? _capturedFile;      
+  bool _isUploading = false; 
 
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _typeController = TextEditingController();
-  final TextEditingController _expiryController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    _initializeCamera();
+  }
 
-  int _currentTabIndex = 1;
+  Future<void> _initializeCamera() async {
+    try {
+      _cameras = await availableCameras();
+      if (_cameras != null && _cameras!.isNotEmpty) {
+        _cameraController = CameraController(
+          _cameras![0], 
+          ResolutionPreset.medium,
+          enableAudio: false,
+        );
 
-  int _quantity = 0;
-  String? _selectedCategory;
-  String? _uploadedImageUrl; //holds img pointer once returned
-
-  Future<void> _saveItem() async {
-    if (_formKey.currentState!.validate()) {
-    
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) =>
-            const Center(
-              child: CircularProgressIndicator(),
-            ),
-      );
-
-      try {
-        await FirebaseFirestore.instance
-            .collection('pantry_items')
-            .add({
-          'name': _nameController.text,
-          'type': _typeController.text,
-          'category': _selectedCategory,
-          'quantity': _quantity,
-          'expiryDate': _expiryController.text,
-          'imageUrl': _uploadedImageUrl,
-          'createdAt': Timestamp.now(),
-          'userId': FirebaseAuth.instance.currentUser!.uid,
+        await _cameraController!.initialize();
+        if (!mounted) return;
+        setState(() {
+          _isCameraInitialized = true;
         });
-
-        await FirebaseFirestore.instance
-            .collection('activity_logs')
-            .add({
-              'name': _nameController.text,
-              'action': 'Added to Pantry',
-              'timestamp': FieldValue.serverTimestamp(),
-              'details': null,
-              'userId': FirebaseAuth.instance.currentUser!.uid,
-            });
-
-        Navigator.pop(context);
-
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const ItemListPage(),
-          ),
-        );
-
-      } catch (e) {
-        Navigator.pop(context); // Close loader
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Save failed: $e')),
-        );
       }
+    } catch (e) {
+      print("Camera initialization failed: $e");
     }
   }
 
-  Future<void> _pickDate(BuildContext context) async {
-    final picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2020),
-      lastDate: DateTime(2100),
-    );
-    if (picked != null) {
+  Future<void> _confirmAndUpload() async {
+    if (_capturedFile == null) return;
+
+    setState(() {
+      _isUploading = true;
+    });
+
+    try {
+      String base64Image;
+
+      if (kIsWeb) {
+        final bytes = await _capturedFile!.readAsBytes();
+        base64Image = base64Encode(bytes);
+      } else {
+        final bytes = await File(_capturedFile!.path).readAsBytes();
+        base64Image = base64Encode(bytes);
+      }
+
+      Navigator.pop(context, base64Image);
+
+    } catch (e) {
+      print(e);
+    }
+
+    setState(() {
+      _isUploading = false;
+    });
+  }
+
+  Future<void> _takePhoto() async {
+    if (_cameraController == null || !_cameraController!.value.isInitialized) return;
+
+    try {
+      final XFile photo = await _cameraController!.takePicture();
+
+      await _cameraController?.dispose();
+
       setState(() {
-        _expiryController.text = "${picked.toLocal()}".split(' ')[0];
+        _isCameraInitialized = false;
+        _capturedFile = photo;
+      });
+    } catch (e) {
+      print("Error capturing photo: $e");
+    }
+  }
+
+  Future<void> _pickFromGallery() async {
+    // 🌟 LOWERED DIMENSIONS & QUALITY TO GUARANTEE FIRESTORE COMPLIANCE
+    final XFile? pickedFile = await _picker.pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 400,       // Changed from 600 to 400
+      maxHeight: 400,      // Changed from 600 to 400
+      imageQuality: 50,    // Dropped to 50% for high data compression
+    );
+
+    if (pickedFile != null) {
+      if (_cameraController != null) {
+        await _cameraController?.dispose();
+      }
+
+      setState(() {
+        _isCameraInitialized = false;
+        _capturedFile = pickedFile;
       });
     }
   }
 
-  Future<void> _navigateToCamera() async {
-    final resultUrl = await Navigator.push<String>(
-      context,
-      MaterialPageRoute(builder: (context) => const SnapItemPhotoScreen()),
-    );
+  void _retakePhoto() async {
+    setState(() {
+      _capturedFile = null;
+    });
 
-    if (resultUrl != null) {
-      setState(() {
-        _uploadedImageUrl = resultUrl; // Assigns URL to display/save state
-      });
-    }
+    await _initializeCamera();
+  }
+
+  @override
+  void dispose() {
+    _cameraController?.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFDCEDC8),
+      backgroundColor: const Color(0xFFDCEDC8),
       appBar: const PantryTopBar(),
 
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
-              const Padding(
-                padding: EdgeInsets.only(bottom: 20.0, top: 4.0),
-                child: Center(
-                  child: 
-                    Text(
-                    "Add Inventory Item",
-                    style: TextStyle(
-                      fontSize: 24, 
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF386641),
+      body: Column(
+        children: [
+          Container(
+            color: Colors.white,
+            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+            child: Row(
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.arrow_back, color: Color(0xFF2C5E3B)),
+                  onPressed: () => Navigator.pop(context),
+                ),
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      _capturedFile != null ? 'Preview Photo' : 'Snap Item Photo',
+                      style: const TextStyle(
+                        color: Color(0xFF2C5E3B),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
                     ),
                   ),
                 ),
-              ),
+                SizedBox(
+                  width: 48, 
+                  child: _capturedFile != null && !_isUploading
+                      ? IconButton(
+                          icon: const Icon(Icons.refresh, color: Color(0xFF2C5E3B)),
+                          onPressed: _retakePhoto,
+                          tooltip: 'Retake Photo',
+                        )
+                      : const SizedBox.shrink(),
+                ),
+              ],
+            ),
+          ),
 
-              _uploadedImageUrl == null
-                  ? OutlinedButton.icon(
-                      onPressed: _navigateToCamera,
-                      style: OutlinedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 24),
-                        side: BorderSide(color: Colors.green.shade700, width: 2),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      icon: Icon(Icons.camera_alt_outlined, color: Colors.green.shade700),
-                      label: Text(
-                        "Add Picture",
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF386641),),
-                      ),
-                    )
-                  : Stack(
-                      children: [
-                        Container(
-                          height: 180,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            border: Border.all(color: Colors.grey.shade300),
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(15),
-                            child: Image.memory(
-                              base64Decode(_uploadedImageUrl!),
-                              fit: BoxFit.cover,
-                            )
-                          ),
-                        ),
-                        // Quick-delete action button to undo and drop back to camera mode
-                        Positioned(
-                          right: 8,
-                          top: 8,
-                          child: CircleAvatar(
-                            backgroundColor: Colors.black54,
-                            child: IconButton(
-                              icon: const Icon(Icons.close, color: Colors.white),
-                              onPressed: () {
-                                setState(() {
-                                  _uploadedImageUrl = null;
-                                });
-                              },
-                            ),
+          Expanded(
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  bottom: 140,
+                  child: _capturedFile != null
+                      ? (kIsWeb 
+                          ? Image.network(_capturedFile!.path, fit: BoxFit.cover) 
+                          : Image.file(File(_capturedFile!.path), fit: BoxFit.cover)
+                        ) 
+                      : (_isCameraInitialized &&
+                        _cameraController != null
+                      ? CameraPreview(_cameraController!)
+                      : const Center(
+                          child: CircularProgressIndicator(
+                          color: Colors.green,
                           ),
                         )
+                      )
+                ),
+
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: Container(
+                    height: 180,
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(40),
+                        topRight: Radius.circular(40),
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _capturedFile != null
+                            ? SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.75,
+                                height: 55,
+                                child: ElevatedButton.icon(
+                                  onPressed: _isUploading ? null : _confirmAndUpload,
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: const Color(0xFF2C5E3B), 
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                  ),
+                                  icon: const Icon(Icons.check_circle_outline, color: Colors.white),
+                                  label: const Text(
+                                    'Confirm Selection',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : Column(
+                                children: [
+                                  Transform.translate(
+                                    offset: const Offset(0, -35),
+                                    child: GestureDetector(
+                                      onTap: _takePhoto,
+                                      child: Container(
+                                        height: 75,
+                                        width: 75,
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xFFE8F5E9),
+                                          shape: BoxShape.circle,
+                                          border: Border.all(color: Colors.white, width: 4),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.black.withValues(alpha: 0.15),
+                                              blurRadius: 8,
+                                              offset: const Offset(0, 4),
+                                            )
+                                          ],
+                                        ),
+                                        child: const Icon(
+                                          Icons.camera_alt_outlined,
+                                          size: 32,
+                                          color: Color(0xFF2E3D30),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Transform.translate(
+                                    offset: const Offset(0, -15),
+                                    child: SizedBox(
+                                      width: MediaQuery.of(context).size.width * 0.65,
+                                      height: 48,
+                                      child: TextButton.icon(
+                                        onPressed: _pickFromGallery,
+                                        style: TextButton.styleFrom(
+                                          backgroundColor: const Color(0xFFCDDEC3),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(12),
+                                          ),
+                                        ),
+                                        icon: const Icon(Icons.image_outlined, color: Color(0xFF2C5E3B)),
+                                        label: const Text(
+                                          'Choose from Gallery',
+                                          style: TextStyle(
+                                            color: Color(0xFF2C5E3B),
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 15,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                       ],
                     ),
-              const SizedBox(height: 20),
+                  ),
+                ),
 
-              TextFormField(
-                controller: _nameController,
-                decoration: const InputDecoration(
-                  labelText: "Name",
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) =>
-                    value == null || value.isEmpty ? "Enter item name" : null,
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: _typeController,
-                decoration: const InputDecoration(
-                  labelText: "Type",
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 12),
-
-              DropdownButtonFormField<String>(
-                initialValue: _selectedCategory,
-                decoration: const InputDecoration(
-                  labelText: "Category",
-                  border: OutlineInputBorder(),
-                ),
-                items: const [
-                  DropdownMenuItem(value: "Dry Food", child: Text("Dry Food")),
-                  DropdownMenuItem(value: "Beverage", child: Text("Beverage")),
-                  DropdownMenuItem(value: "Fresh Products", child: Text("Fresh Products")),
-                  DropdownMenuItem(value: "Frozen", child: Text("Frozen")),
-                  DropdownMenuItem(value: "Protein", child: Text("Protein")),
-                ],
-                onChanged: (value) {
-                  setState(() {
-                    _selectedCategory = value!;
-                  });
-                },
-                validator: (value) =>
-                    value == null || value.isEmpty ? "Please select a category" : null,
-              ),
-
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  const Text(
-                    "Quantity:",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-                  ),
-                  const SizedBox(width: 12),
-                  IconButton(
-                    icon: const Icon(Icons.remove_circle, color: Colors.red),
-                    onPressed: () {
-                      setState(() {
-                        if (_quantity > 0) _quantity--;
-                      });
-                    },
-                  ),
-                  Text(
-                    "$_quantity",
-                    style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.add_circle, color: Colors.green),
-                    onPressed: () {
-                      setState(() {
-                        _quantity++;
-                      });
-                    },
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _expiryController,
-                readOnly: true,
-                decoration: const InputDecoration(
-                  labelText: "Expiry Date",
-                  border: OutlineInputBorder(),
-                  suffixIcon: Icon(Icons.calendar_today),
-                ),
-                onTap: () => _pickDate(context),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red.shade400,
-                      foregroundColor: Colors.white,
+                if (_isUploading)
+                  Container(
+                    color: Colors.black45,
+                    child: const Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CircularProgressIndicator(color: Colors.white),
+                          SizedBox(height: 12),
+                          Text(
+                            'Uploading to Smart Pantry Storage...',
+                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+                          )
+                        ],
+                      ),
                     ),
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text("Cancel"),
                   ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green.shade700,
-                      foregroundColor: Colors.white,
-                    ),
-                    onPressed: _saveItem,
-                    child: const Text("Save"),
-                  ),
-                ],
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ),
-      bottomNavigationBar: PantryBottomBar(
-        currentIndex: _currentTabIndex,
-        onTap: (index) {
-          setState(() {
-            _currentTabIndex = index; 
-          });
-        },
+        ],
       ),
     );
   }
