@@ -327,7 +327,7 @@ class DashboardPage extends StatelessWidget {
                         const SizedBox(height: 15),
 
                         SizedBox(
-                          height: 260,
+                          height: 320,
                           child: Row(
                             children: [
 
@@ -405,7 +405,7 @@ class DashboardPage extends StatelessWidget {
                                                       value: freshCount.toDouble(),
                                                       color: Colors.green,
                                                       title: freshCount.toString(),
-                                                      radius: 35,
+                                                      radius: 25,
                                                       titleStyle: const TextStyle(
                                                         color: Colors.white,
                                                         fontSize: 10,
@@ -417,7 +417,7 @@ class DashboardPage extends StatelessWidget {
                                                       value: expiringCount.toDouble(),
                                                       color: Colors.orange,
                                                       title: expiringCount.toString(),
-                                                      radius: 35,
+                                                      radius: 25,
                                                       titleStyle: const TextStyle(
                                                         color: Colors.white,
                                                         fontSize: 10,
@@ -429,7 +429,7 @@ class DashboardPage extends StatelessWidget {
                                                       value: expiredCount.toDouble(),
                                                       color: Colors.red,
                                                       title: expiredCount.toString(),
-                                                      radius: 35,
+                                                      radius: 25,
                                                       titleStyle: const TextStyle(
                                                         color: Colors.white,
                                                         fontSize: 10,

@@ -20,7 +20,7 @@ class PantryTopBar extends StatelessWidget implements PreferredSizeWidget {
       title: Row(
         children: [
           Image.asset(
-            'images/applogo.png',
+            'assets/images/applogo.png',
             height: 40,
             width: 40,
           ),
