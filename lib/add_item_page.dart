@@ -27,7 +27,7 @@ class _AddItemPageState extends State<AddItemPage> {
 
   int _quantity = 0;
   String? _selectedCategory;
-  String? _uploadedImageUrl; //holds img pointer once returned
+  String? _uploadedImageUrl; // holds img pointer once returned
 
   Future<void> _saveItem() async {
     if (_formKey.currentState!.validate()) {
@@ -113,7 +113,7 @@ class _AddItemPageState extends State<AddItemPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFDCEDC8),
+      backgroundColor: const Color(0xFFDCEDC8),
       appBar: const PantryTopBar(),
 
       body: Padding(
@@ -148,7 +148,7 @@ class _AddItemPageState extends State<AddItemPage> {
                         ),
                       ),
                       icon: Icon(Icons.camera_alt_outlined, color: Colors.green.shade700),
-                      label: Text(
+                      label: const Text(
                         "Add Picture",
                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF386641),),
                       ),
@@ -167,6 +167,9 @@ class _AddItemPageState extends State<AddItemPage> {
                             child: Image.memory(
                               base64Decode(_uploadedImageUrl!),
                               fit: BoxFit.cover,
+                              key: ValueKey(_uploadedImageUrl), 
+                              // 🌟 FIXED FLICKER: Prevents clearing the old frame while decoding the new layout state!
+                              gaplessPlayback: true, 
                             )
                           ),
                         ),
@@ -210,7 +213,7 @@ class _AddItemPageState extends State<AddItemPage> {
               const SizedBox(height: 12),
 
               DropdownButtonFormField<String>(
-                initialValue: _selectedCategory,
+                value: _selectedCategory,
                 decoration: const InputDecoration(
                   labelText: "Category",
                   border: OutlineInputBorder(),
@@ -224,7 +227,7 @@ class _AddItemPageState extends State<AddItemPage> {
                 ],
                 onChanged: (value) {
                   setState(() {
-                    _selectedCategory = value!;
+                    _selectedCategory = value;
                   });
                 },
                 validator: (value) =>
