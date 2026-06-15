@@ -32,6 +32,7 @@ class PantryTopBar extends StatelessWidget implements PreferredSizeWidget {
             style: TextStyle(
               color: Color(0xFF2F6B4F),
               fontWeight: FontWeight.bold,
+              fontSize: 16,
             ),
           ),
         ],

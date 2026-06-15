@@ -391,104 +391,76 @@ class DashboardPage extends StatelessWidget {
                                           borderRadius: BorderRadius.circular(12),
                                         ),
                                         child: Row(
+                                          crossAxisAlignment: CrossAxisAlignment.end,
                                           children: [
 
                                             Expanded(
-                                              flex: 2,
+                                              flex: 3,
                                               child: PieChart(
                                                 PieChartData(
                                                   centerSpaceRadius: 15,
                                                   sectionsSpace: 2,
                                                   sections: [
-
                                                     PieChartSectionData(
                                                       value: freshCount.toDouble(),
                                                       color: Colors.green,
                                                       title: freshCount.toString(),
                                                       radius: 25,
-                                                      titleStyle: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 10,
-                                                        fontWeight: FontWeight.bold,
-                                                      ),
                                                     ),
-
                                                     PieChartSectionData(
                                                       value: expiringCount.toDouble(),
                                                       color: Colors.orange,
                                                       title: expiringCount.toString(),
                                                       radius: 25,
-                                                      titleStyle: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 10,
-                                                        fontWeight: FontWeight.bold,
-                                                      ),
                                                     ),
-
                                                     PieChartSectionData(
                                                       value: expiredCount.toDouble(),
                                                       color: Colors.red,
                                                       title: expiredCount.toString(),
                                                       radius: 25,
-                                                      titleStyle: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 10,
-                                                        fontWeight: FontWeight.bold,
-                                                      ),
                                                     ),
                                                   ],
                                                 ),
                                               ),
                                             ),
 
-                                            const SizedBox(width: 5),
+                                            const SizedBox(width: 8),
 
                                             Expanded(
+                                              flex: 2,
                                               child: Column(
-                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                mainAxisAlignment: MainAxisAlignment.end,
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
 
                                                   Row(
                                                     children: const [
-                                                      Icon(Icons.circle,
-                                                          size: 8,
-                                                          color: Colors.green),
-                                                      SizedBox(width: 4),
-                                                      Text(
-                                                        "Fresh",
-                                                        style: TextStyle(fontSize: 9),
-                                                      ),
+                                                      Icon(Icons.circle, size: 6, color: Colors.green),
+                                                      SizedBox(width: 3),
+                                                      Text("Fresh",
+                                                          style: TextStyle(fontSize: 8)),
                                                     ],
                                                   ),
 
-                                                  SizedBox(height: 5),
+                                                  SizedBox(height: 3),
 
                                                   Row(
                                                     children: const [
-                                                      Icon(Icons.circle,
-                                                          size: 8,
-                                                          color: Colors.orange),
-                                                      SizedBox(width: 4),
-                                                      Text(
-                                                        "Soon",
-                                                        style: TextStyle(fontSize: 9),
-                                                      ),
+                                                      Icon(Icons.circle, size: 6, color: Colors.orange),
+                                                      SizedBox(width: 3),
+                                                      Text("Soon",
+                                                          style: TextStyle(fontSize: 8)),
                                                     ],
                                                   ),
 
-                                                  SizedBox(height: 5),
+                                                  SizedBox(height: 3),
 
                                                   Row(
                                                     children: const [
-                                                      Icon(Icons.circle,
-                                                          size: 8,
-                                                          color: Colors.red),
-                                                      SizedBox(width: 4),
-                                                      Text(
-                                                        "Expired",
-                                                        style: TextStyle(fontSize: 9),
-                                                      ),
+                                                      Icon(Icons.circle, size: 6, color: Colors.red),
+                                                      SizedBox(width: 3),
+                                                      Text("Expired",
+                                                          style: TextStyle(fontSize: 8)),
                                                     ],
                                                   ),
                                                 ],
