@@ -573,6 +573,7 @@ class _ItemListPageState extends State<ItemListPage> {
                                                                           'name': item['name'],
                                                                           'action': 'Updated',
                                                                           'timestamp': FieldValue.serverTimestamp(),
+                                                                          'userId': FirebaseAuth.instance.currentUser!.uid,
                                                                           'details':
                                                                               'Quantity changed from ${item['quantity']} to $tempQty',
                                                                         });
