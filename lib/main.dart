@@ -390,12 +390,11 @@ class DashboardPage extends StatelessWidget {
                                           color: const Color(0xFFF5F5F5),
                                           borderRadius: BorderRadius.circular(12),
                                         ),
-                                        child: Row(
-                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
 
                                             Expanded(
-                                              flex: 3,
                                               child: PieChart(
                                                 PieChartData(
                                                   centerSpaceRadius: 15,
@@ -424,43 +423,42 @@ class DashboardPage extends StatelessWidget {
                                               ),
                                             ),
 
-                                            const SizedBox(width: 8),
+                                            const SizedBox(height: 6),
 
-                                            Expanded(
-                                              flex: 2,
-                                              child: Column(
-                                                mainAxisAlignment: MainAxisAlignment.end,
+                                            Align(
+                                              alignment: Alignment.centerLeft,
+                                              child:Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
 
                                                   Row(
+                                                    mainAxisSize: MainAxisSize.min,
                                                     children: const [
                                                       Icon(Icons.circle, size: 6, color: Colors.green),
                                                       SizedBox(width: 3),
-                                                      Text("Fresh",
-                                                          style: TextStyle(fontSize: 8)),
+                                                      Text("Fresh", style: TextStyle(fontSize: 8)),
                                                     ],
                                                   ),
 
-                                                  SizedBox(height: 3),
+                                                  SizedBox(height: 2),
 
                                                   Row(
+                                                    mainAxisSize: MainAxisSize.min,
                                                     children: const [
                                                       Icon(Icons.circle, size: 6, color: Colors.orange),
                                                       SizedBox(width: 3),
-                                                      Text("Soon",
-                                                          style: TextStyle(fontSize: 8)),
+                                                      Text("Soon", style: TextStyle(fontSize: 8)),
                                                     ],
                                                   ),
 
-                                                  SizedBox(height: 3),
+                                                  SizedBox(height: 2),
 
                                                   Row(
+                                                    mainAxisSize: MainAxisSize.min,
                                                     children: const [
                                                       Icon(Icons.circle, size: 6, color: Colors.red),
                                                       SizedBox(width: 3),
-                                                      Text("Expired",
-                                                          style: TextStyle(fontSize: 8)),
+                                                      Text("Expired", style: TextStyle(fontSize: 8)),
                                                     ],
                                                   ),
                                                 ],
@@ -521,12 +519,13 @@ class DashboardPage extends StatelessWidget {
                                               return Padding(
                                                 padding: const EdgeInsets.only(top: 6),
                                                 child: SizedBox(
-                                                  width: 45,
-                                                  child: Text(
-                                                    categories[value.toInt()],
-                                                    textAlign: TextAlign.center,
-                                                    style: const TextStyle(fontSize: 8),
-                                                    maxLines: 2,
+                                                  width: 25,
+                                                  child: RotatedBox(
+                                                    quarterTurns: 3,
+                                                    child: Text(
+                                                      categories[value.toInt()],
+                                                      style: const TextStyle(fontSize: 8),
+                                                    ),
                                                   ),
                                                 ),
                                               );
@@ -545,7 +544,7 @@ class DashboardPage extends StatelessWidget {
                                             barRods: [
                                               BarChartRodData(
                                                 toY: categoryCounts.values.elementAt(index).toDouble(),
-                                                width: 20,
+                                                width: 14,
                                                 borderRadius: BorderRadius.circular(4),
                                                 color: const Color(0xFF2F6B4F),
                                               ),
