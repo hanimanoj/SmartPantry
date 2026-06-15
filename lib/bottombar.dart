@@ -79,21 +79,28 @@ class _PantryBottomBarState extends State<PantryBottomBar> {
         unselectedLabelStyle: const TextStyle(fontSize: 12),
         
         items: const [
+          // Home navigation item
           BottomNavigationBarItem(
             icon: Icon(Icons.home_outlined),
             activeIcon: Icon(Icons.home),
             label: 'Home',
           ),
+
+          // Inventory navigation item
           BottomNavigationBarItem(
             icon: Icon(Icons.inventory_2_outlined), 
             activeIcon: Icon(Icons.inventory_2),
             label: 'Inventory',
           ),
+
+          // History navigation item
           BottomNavigationBarItem(
             icon: Icon(Icons.history_toggle_off_rounded), 
             activeIcon: Icon(Icons.history),
             label: 'History',
           ),
+
+          // Profile navigation item
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outline_rounded),
             activeIcon: Icon(Icons.person),

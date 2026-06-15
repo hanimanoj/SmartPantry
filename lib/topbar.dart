@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'inbox.dart';
 
 class PantryTopBar extends StatelessWidget implements PreferredSizeWidget {
+  // Control whether notification icon should be displayed
   final bool showNotificationIcon;
   
   const PantryTopBar({
@@ -11,8 +12,9 @@ class PantryTopBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Build AppBar UI
     return AppBar(
-      automaticallyImplyLeading: false,
+      automaticallyImplyLeading: false, // Disable automatic back button
       backgroundColor: Colors.white,
       elevation: 4,
       shadowColor: Colors.black26,
@@ -20,7 +22,7 @@ class PantryTopBar extends StatelessWidget implements PreferredSizeWidget {
       title: Row(
         children: [
           Image.asset(
-            'assets/images/applogo.png',
+            'assets/images/applogo.png', // Application logo displayed on the top bar
             height: 40,
             width: 40,
           ),
@@ -28,7 +30,7 @@ class PantryTopBar extends StatelessWidget implements PreferredSizeWidget {
           const SizedBox(width: 10),
 
           const Text(
-            "SmartPantry Tracker",
+            "SmartPantry Tracker", // Application title displayed beside the logo
             style: TextStyle(
               color: Color(0xFF2F6B4F),
               fontWeight: FontWeight.bold,
@@ -46,8 +48,10 @@ class PantryTopBar extends StatelessWidget implements PreferredSizeWidget {
             onPressed: () {
               Navigator.push(
                 context,
+
+                // Navigate to Inbox page when notification icon is pressed
                 MaterialPageRoute(
-                  builder: (context) => const InboxPage(),
+                  builder: (context) => const InboxPage(), 
                 ),
               );
             },
@@ -63,5 +67,5 @@ class PantryTopBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight); // Define standard AppBar height
 }

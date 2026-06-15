@@ -11,11 +11,15 @@ import 'add_item_page.dart';
 import 'login_page.dart';
 
 void main() async {
+  // Ensure Flutter bindings are initialized before Firebase setup
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Firebase connection
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   
+  // Launch application
   runApp(const SmartPantryApp());
 }
 
@@ -24,13 +28,16 @@ class SmartPantryApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Main application configuration
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Smart Pantry',
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: const LoginPage(),
+
+      // First screen displayed when app starts
+      home: const LoginPage(), 
     );
   }
 }
@@ -40,6 +47,7 @@ class DashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Get currently logged-in Firebase user
     final user = FirebaseAuth.instance.currentUser;
 
     return Scaffold(
@@ -47,9 +55,11 @@ class DashboardPage extends StatelessWidget {
 
       appBar: PantryTopBar(),
       
+      // Real-time Firestore listener for user's pantry items
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
               .collection('pantry_items')
+              // Filter items based on logged-in user ID
               .where(
                 'userId',
                 isEqualTo: FirebaseAuth.instance.currentUser!.uid,
@@ -65,7 +75,8 @@ class DashboardPage extends StatelessWidget {
 
           final items = snapshot.data!.docs;
           final sortedItems = [...items];
-
+          
+          // Sort pantry items by expiry date (nearest expiry first)
           sortedItems.sort((a, b) {
             try {
               final expiryA = DateTime.parse(a['expiryDate']);
@@ -84,6 +95,7 @@ class DashboardPage extends StatelessWidget {
           int expiringCount = 0;
           int expiredCount = 0;
           
+          // Calculate item status based on expiry date
           for (var doc in items) {
             try {
               final expiry = DateTime.parse(doc['expiryDate']);
@@ -98,6 +110,8 @@ class DashboardPage extends StatelessWidget {
               }
             } catch (_) {}
           }
+
+          // Count items that will expire within 7 days
           final expiringSoon = items.where((doc) {
             try {
               final expiry = DateTime.parse(doc['expiryDate']);
@@ -109,6 +123,7 @@ class DashboardPage extends StatelessWidget {
             }
           }).length;
 
+          // Count items added during current month
           final addedThisMonth = items.where((doc) {
             try {
               final Timestamp ts = doc['createdAt'];
@@ -121,6 +136,7 @@ class DashboardPage extends StatelessWidget {
             }
           }).length;
 
+          // Count total items per category
           Map<String, int> categoryCounts = {};
         
           for (var doc in items) {
@@ -130,6 +146,7 @@ class DashboardPage extends StatelessWidget {
                 (categoryCounts[category] ?? 0) + 1;
           }
 
+          // Retrieve items expiring within 7 days
           final expiringItems = sortedItems.where((doc) {
             try {
               final expiry = DateTime.parse(doc['expiryDate']);
@@ -167,7 +184,7 @@ class DashboardPage extends StatelessWidget {
 
                   const SizedBox(height: 20),
 
-                  // EXPIRING SOON
+                  // Expiring Soon Features for items nearing expiry
                   Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
@@ -237,6 +254,8 @@ class DashboardPage extends StatelessWidget {
                                               doc['imageUrl'].toString().isNotEmpty)
                                             ClipRRect(
                                               borderRadius: BorderRadius.circular(8),
+
+                                              // Decode Base64 image stored in Firestore
                                               child: Image.memory(
                                                 base64Decode(doc['imageUrl']),
                                                 width: 70,
@@ -256,6 +275,7 @@ class DashboardPage extends StatelessWidget {
                                             overflow: TextOverflow.ellipsis,
                                           ),
 
+                                          // Display remaining days before item expires
                                           Text(
                                             diff == 0
                                                 ? "Today"
@@ -295,6 +315,7 @@ class DashboardPage extends StatelessWidget {
 
                         const SizedBox(height: 15),
 
+                        // KPI Cards showing pantry statistics
                         Row(
                           children: [
                             Expanded(
@@ -357,6 +378,7 @@ class DashboardPage extends StatelessWidget {
 
                                             const SizedBox(height: 8),
 
+                                            // Calculate percentage of healthy (fresh) items
                                             Text(
                                               "${((freshCount / (totalItems == 0 ? 1 : totalItems)) * 100).round()}%",
                                               style: const TextStyle(
@@ -382,7 +404,7 @@ class DashboardPage extends StatelessWidget {
 
                                     const SizedBox(height: 10),
 
-                                    // STATUS DISTRIBUTION PIE CHART
+                                    // Visualize item status distribution
                                     Expanded(
                                       child: Container(
                                         padding: const EdgeInsets.all(8),
@@ -474,6 +496,7 @@ class DashboardPage extends StatelessWidget {
 
                               SizedBox(width: 10),
 
+                              // Display number of items in each category
                               Expanded(
                                 child: Container(
                                   padding: const EdgeInsets.all(10),
@@ -536,6 +559,7 @@ class DashboardPage extends StatelessWidget {
 
                                       borderData: FlBorderData(show: false),
 
+                                      // Dynamically generate bars from category data
                                       barGroups: List.generate(
                                         categoryCounts.length,
                                         (index) {
@@ -569,6 +593,7 @@ class DashboardPage extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton.icon(
                       onPressed: () {
+                        // Navigate to Add Item page
                         Navigator.push(
                           context,
                           MaterialPageRoute(
