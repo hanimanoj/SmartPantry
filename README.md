@@ -72,7 +72,7 @@
    <h2>6.1 Widgets & Components Structure</h2>
      <img width="363" height="306" alt="image" src="https://github.com/user-attachments/assets/965eee7f-d285-438f-88ff-ae3cb3b77322" /> <br>
     <h2>6.2 State Management Approach</h2>
-      The Smart Pantry application will use Provider as its state management solution. Provider enables efficient data sharing across widgets while maintaining a clear separation between the user interface and business logic. It is lightweight, easy to implement, and well-suited for Firebase-based applications. Provider will be used to manage authentication status, pantry item data, image storage operations, and dashboard analytics throughout the application.
+      The SmartPantry application implements a decentralized, lightweight state management approach that combines **setState** with Firebase Streams. Local component state handles isolated screen lifecycles such as validating inputs, and counting item metrics. The app also utilizes **StreamBuilder** elements that connect directly to live Cloud Firestore snapshot streams.
 
 
 <h1>7. ⁠Data model </h1> 
