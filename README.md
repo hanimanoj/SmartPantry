@@ -8,7 +8,10 @@
 - LAILA KARMILA BINTI SHAHRUNIZAM (2313814) ; Pantry Management & Profile Page
 
 <h1>1. Introduction </h1>
-  Lately, a lot of people experience food waste among the products that they bought, because of poor tracking of product expiration date. Many people also seldomly forgot items in their pantry that leads to unnecessary waste. To avoid this issue, we proposed a Smart Pantry application. 
+  Lately, a lot of people experience food waste among the products that they bought, because of poor tracking of product expiration date. Many people also seldomly forgot items in their pantry that leads to unnecessary waste. To avoid this issue, we proposed a Smart Pantry application.
+  The Smart Pantry application was developed using Flutter as the frontend framework and Firebase as the backend service. Flutter was selected because it supports cross-platform development, allowing a single codebase to be deployed across multiple platforms. Firebase services were configured for Web, Android, iOS, macOS, and Linux, providing flexibility for future deployment and ensuring compatibility across different operating systems.
+  The uniqueness of the Smart Pantry application lies in its ability to centralize pantry management by allowing users to record pantry items, monitor expiration dates, and track item status through an organized and user-friendly interface. The application also features a dashboard that provides visual insights into pantry inventory, including item statistics, category distribution, and expiration tracking. By combining real-time Firebase data synchronization with inventory monitoring features, the application helps users manage food more efficiently while promoting sustainable practices and reducing food waste.
+
 <h1>2. Objective </h1>
 
 - Develop a mobile application that allows user to keep track of the products they bought including the expiration date
