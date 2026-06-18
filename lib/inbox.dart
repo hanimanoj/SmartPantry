@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'topbar.dart';
 import 'bottombar.dart';
-import 'dart:math'; // Needed to randomize friendly nudges smoothly
+import 'dart:math';
 
 class InboxPage extends StatefulWidget {
   const InboxPage({super.key});
@@ -14,7 +14,6 @@ class InboxPage extends StatefulWidget {
 
 class _InboxPageState extends State<InboxPage> {
 
-  // Helper method to convert months to words matching your design screenshot style
   String _formatTimestamp(DateTime date, {bool isExactMidnight = true}) {
     final List<String> months = [
       "January", "February", "March", "April", "May", "June", 
@@ -25,7 +24,6 @@ class _InboxPageState extends State<InboxPage> {
     return "${date.day} $monthWord, $timeStr";
   }
 
-  // Helper for formatting system log times safely
   String _formatLogTime(Timestamp? timestamp) {
     if (timestamp == null) return "Just now";
     DateTime date = timestamp.toDate();
@@ -37,7 +35,6 @@ class _InboxPageState extends State<InboxPage> {
     return months[monthIndex - 1];
   }
 
-  // 🛠️ REMINDERS CALCULATOR ENGINE (UPDATED TO PERSIST GENERATED TIME)
   List<Map<String, dynamic>> _generateLiveRemindersFromDocs(List<QueryDocumentSnapshot> docs) {
     List<Map<String, dynamic>> liveReminders = [];
     DateTime now = DateTime.now();
@@ -54,7 +51,6 @@ class _InboxPageState extends State<InboxPage> {
         
         String titleText = "";
 
-        // Determine if this item qualifies for a reminder alert window
         if (daysDifference < 0) {
           titleText = "${item['name'] ?? 'Item'} is past its expiry date.";
         } else if (daysDifference == 0) {
@@ -78,14 +74,14 @@ class _InboxPageState extends State<InboxPage> {
           continue; 
         }
 
-        // 🌟 TIME MEMORY LOGIC: Look for an existing timestamp in Firestore
+        // Look for an existing timestamp in Firestore
         String badgeTimestamp;
         if (item['reminderGeneratedAt'] != null) {
           // If Firestore already has the time saved, pull and format it directly
           DateTime storedTime = (item['reminderGeneratedAt'] as Timestamp).toDate();
           badgeTimestamp = _formatTimestamp(storedTime, isExactMidnight: false);
         } else {
-          // If this is the exact moment the reminder came out, save it to Firestore right now!
+          // If this is the exact moment the reminder came out, save it to Firestore
           badgeTimestamp = _formatTimestamp(now, isExactMidnight: false);
           
           FirebaseFirestore.instance.collection('pantry_items').doc(doc.id).update({
@@ -110,7 +106,7 @@ class _InboxPageState extends State<InboxPage> {
     return liveReminders;
   }
 
-  // 🛠️ DYNAMIC RANDOM FRIENDLY NUDGES GENERATOR
+  // RANDOM FRIENDLY NUDGES GENERATOR
   String _getRandomNudge(List<QueryDocumentSnapshot> pantryDocs) {
     if (pantryDocs.isEmpty) {
       return "Your pantry is looking empty! Time to add some groceries. 🛒";
@@ -149,7 +145,6 @@ class _InboxPageState extends State<InboxPage> {
         appBar: const PantryTopBar(), 
         body: Column(
           children: [
-            // Sub Header Navigation
             Container(
               color: Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 4.0),
@@ -171,7 +166,6 @@ class _InboxPageState extends State<InboxPage> {
               ),
             ),
 
-            // Tab Controls Layout Bar
             Container(
               color: Colors.white,
               child: const TabBar(
@@ -189,11 +183,9 @@ class _InboxPageState extends State<InboxPage> {
               ),
             ),
 
-            // Active Panel View Area
             Expanded(
               child: TabBarView(
                 children: [
-                  // --- TAB 1: DYNAMIC LIVE REMINDERS ---
                   StreamBuilder<QuerySnapshot>(
                     stream: FirebaseFirestore.instance
                     .collection('pantry_items')
@@ -256,7 +248,6 @@ class _InboxPageState extends State<InboxPage> {
                     },
                   ),
 
-                  // --- TAB 2: LIVE NOTIFICATIONS AND FRIENDLY NUDGES ---
                   StreamBuilder<QuerySnapshot>(
                     stream: FirebaseFirestore.instance
                     .collection('pantry_items')
