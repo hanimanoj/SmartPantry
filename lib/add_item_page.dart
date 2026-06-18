@@ -75,7 +75,7 @@ class _AddItemPageState extends State<AddItemPage> {
         );
 
       } catch (e) {
-        Navigator.pop(context); // Close loader
+        Navigator.pop(context); 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Save failed: $e')),
         );
@@ -168,12 +168,10 @@ class _AddItemPageState extends State<AddItemPage> {
                               base64Decode(_uploadedImageUrl!),
                               fit: BoxFit.cover,
                               key: ValueKey(_uploadedImageUrl), 
-                              // 🌟 FIXED FLICKER: Prevents clearing the old frame while decoding the new layout state!
                               gaplessPlayback: true, 
                             )
                           ),
                         ),
-                        // Quick-delete action button to undo and drop back to camera mode
                         Positioned(
                           right: 8,
                           top: 8,
@@ -213,7 +211,7 @@ class _AddItemPageState extends State<AddItemPage> {
               const SizedBox(height: 12),
 
               DropdownButtonFormField<String>(
-                value: _selectedCategory,
+                initialValue: _selectedCategory,
                 decoration: const InputDecoration(
                   labelText: "Category",
                   border: OutlineInputBorder(),
