@@ -18,10 +18,9 @@ class _HistoryPageState extends State<HistoryPage> {
   String _selectedActionFilter = 'All';
   String _selectedYearFilter = '2026';
 
-  // 🌟 SAFETY CHECK FLAG: Prevents the app from running an infinite re-render loop
   bool _hasCheckedExpiration = false; 
 
-  // Helper method to convert database Timestamp format into your precise string layout
+  // Convert database Timestamp format into precise string layout
   String _formatCloudTimestamp(Timestamp? cloudTimestamp) {
     if (cloudTimestamp == null) return '-';
     DateTime dateTime = cloudTimestamp.toDate();
@@ -50,9 +49,8 @@ class _HistoryPageState extends State<HistoryPage> {
     _checkAndLogExpiredItems();
   }
 
-  // 🛠️ SAFE AUTO EXPIRED LOGGER ENGINE
   void _checkAndLogExpiredItems() async {
-    if (_hasCheckedExpiration) return; // 👈 Safety shield: exits instantly if already processed
+    if (_hasCheckedExpiration) return; // exits instantly if already processed
     _hasCheckedExpiration = true;
 
     DateTime today = DateTime.now();
@@ -80,7 +78,7 @@ class _HistoryPageState extends State<HistoryPage> {
           String itemName = item['name'] ?? 'Unnamed Item';
           String expiryYearStr = expiryNormalized.year.toString();
 
-          // Check if this specific item has already been marked 'Expired' in your log database
+          // Check if this specific item has already been marked 'Expired' in log db
           final existingLogCheck = await FirebaseFirestore.instance
               .collection('activity_logs')
               .where('name', isEqualTo: itemName)
@@ -88,13 +86,13 @@ class _HistoryPageState extends State<HistoryPage> {
               .limit(1)
               .get();
 
-          // If it hasn't been logged yet, commit it to Firestore!
+          // If it hasnt been logged yet, commit it to Firestore
           if (existingLogCheck.docs.isEmpty) {
             await FirebaseFirestore.instance.collection('activity_logs').add({
               'name': itemName,
               'action': 'Expired', 
               'timestamp': FieldValue.serverTimestamp(),
-              'logYear': expiryYearStr, // 👈 Saved for streamlined, error-free filtering down below!
+              'logYear': expiryYearStr, 
               'details': 'Item passed its target shelf date of ${item['expiryDate']}.',
               'userId': FirebaseAuth.instance.currentUser!.uid,
             });
@@ -110,7 +108,7 @@ class _HistoryPageState extends State<HistoryPage> {
   Widget build(BuildContext context) {
     const primaryGreen = Color(0xFF386641);
 
-    // 🛠️ DYNAMIC FIRESTORE QUERY CONSTRUCTOR
+    // DYNAMIC FIRESTORE QUERY CONSTRUCTOR
     Query queryBase = FirebaseFirestore.instance
         .collection('activity_logs')
         .where(
@@ -142,7 +140,6 @@ class _HistoryPageState extends State<HistoryPage> {
 
       body: Column(
         children: [
-          // Sub-Header Title Line
           Container(
             padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: const Center(
@@ -153,13 +150,11 @@ class _HistoryPageState extends State<HistoryPage> {
             ),
           ),
 
-          // Dropdown Filter Controls Row Layout Container
           Container(
             padding: const EdgeInsets.only(right: 16.0, bottom: 8.0, left: 16.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                // Action Filter Dropdown Box
                 Container(
                   height: 32,
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -194,7 +189,7 @@ class _HistoryPageState extends State<HistoryPage> {
                 ),
                 const SizedBox(width: 8),
 
-                // Calendar Year Filter Dropdown Box
+                // Calendar Year Filter
                 Container(
                   height: 32,
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -227,7 +222,6 @@ class _HistoryPageState extends State<HistoryPage> {
             ),
           ),
 
-          // Real-time Cloud Streaming List Output View Frame
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
               stream: queryBase.snapshots(), 
