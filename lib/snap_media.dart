@@ -96,12 +96,11 @@ class _SnapItemPhotoScreenState extends State<SnapItemPhotoScreen> {
   }
 
   Future<void> _pickFromGallery() async {
-    // 🌟 LOWERED DIMENSIONS & QUALITY TO GUARANTEE FIRESTORE COMPLIANCE
     final XFile? pickedFile = await _picker.pickImage(
       source: ImageSource.gallery,
-      maxWidth: 400,       // Changed from 600 to 400
-      maxHeight: 400,      // Changed from 600 to 400
-      imageQuality: 50,    // Dropped to 50% for high data compression
+      maxWidth: 400,       
+      maxHeight: 400,      
+      imageQuality: 50,    
     );
 
     if (pickedFile != null) {
